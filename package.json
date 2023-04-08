@@ -1,18 +1,21 @@
 {
-  "name": "encrypt0r",
+  "name": "@RockBacon9922/envcrypt",
   "version": "1.0.0",
-  "description": "",
-  "main": "src/index.ts",
+  "description": "A easy way to encrypt and decrypt your environment variables",
+  "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "ts-node ."
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "bin": "./index.js",
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "@types/node": "^18.15.11",
-    "ts-node": "^10.9.1",
-    "tslib": "^2.5.0",
-    "typescript": "^5.0.4"
+  "dependencies": {
+    "figlet": "^1.6.0",
+    "inquirer": "^9.1.5"
+  },
+  "publishConfig": {
+    "@RockBacon9922:registry": "https://npm.pkg.github.com"
   }
 }
