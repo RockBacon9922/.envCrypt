@@ -1,6 +1,6 @@
 {
   "name": "@rockbacon9922/envcrypt",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A easy way to encrypt and decrypt your environment variables",
   "main": "index.js",
   "type": "module",
@@ -8,7 +8,15 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": "./index.js",
-  "keywords": [],
+  "keywords": [
+    "Encryption",
+    "Decryption",
+    "Environment",
+    "Variables",
+    "Env",
+    "Crypt",
+    "EnvCrypt"
+  ],
   "author": "William Stoneham",
   "license": "ISC",
   "dependencies": {
