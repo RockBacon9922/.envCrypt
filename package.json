@@ -24,6 +24,7 @@
   "author": "William Stoneham",
   "license": "ISC",
   "dependencies": {
+    "chalk": "^5.2.0",
     "figlet": "^1.6.0",
     "inquirer": "^9.1.5"
   }

@@ -3,9 +3,14 @@
 import inquirer from "inquirer";
 import figlet from "figlet";
 import crypto from "crypto";
-import { readFileSync, write, writeFileSync } from "fs";
+import chalk from "chalk";
+import { copyFileSync, readFileSync, write, writeFileSync } from "fs";
 
 const algorithm = "aes256";
+
+const wait = (ms) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
 
 const encrypt = (text, password) => {
   const iv = crypto.randomBytes(16);
@@ -20,8 +25,13 @@ const decrypt = (text, password) => {
   const iv = Buffer.from(textParts.shift(), "hex");
   const encryptedText = Buffer.from(textParts.join(":"), "hex");
   const decipher = crypto.createDecipheriv(algorithm, password, iv);
-  const decrypted =
-    decipher.update(encryptedText, "hex", "utf8") + decipher.final("utf8");
+  try {
+    var decrypted =
+      decipher.update(encryptedText, "hex", "utf8") + decipher.final("utf8");
+  } catch (err) {
+    console.log(chalk.bgRed("Incorrect password."));
+    process.exit(1);
+  }
   return decrypted.toString();
 };
 
@@ -33,22 +43,23 @@ const hash = (password) => {
     .substring(0, 32));
 };
 
-const setPassword = async () => {
+const setPassword = async (envFile) => {
   let { password } = await inquirer.prompt([
     {
       type: "password",
       name: "password",
-      message: "Please enter a password to encrypt your environment variables",
+      message:
+        "Please enter a password to encrypt/decrypt your environment variables",
     },
   ]);
   // open env file and add password to it
-  let env = readFileSync(".env", "utf8");
-  env += `
+  let envLine = readFileSync(envFile, "utf8");
+  envLine += `
 ENV_PASSWORD=${password} # Created by envcrypt
 `;
-  writeFileSync(".env", env);
+  writeFileSync(envFile, envLine);
 
-  return hash(password);
+  return password;
 };
 
 async function main() {
@@ -66,15 +77,6 @@ async function main() {
     },
   ]);
 
-  // add args to reset password
-
-  process.argv.forEach((val, index) => {
-    if (val === "--reset") {
-      // delete .envcrypt file
-      writeFileSync(".envcrypt", "");
-    }
-  });
-
   const { envFile } = await inquirer.prompt([
     {
       type: "input",
@@ -88,23 +90,36 @@ async function main() {
   try {
     const env = readFileSync(envFile, "utf8");
   } catch (err) {
-    console.log("The file you specified does not exist.");
-    // exit program as failure
-    process.exit(1);
+    const confirm = await inquirer.prompt([
+      {
+        type: "confirm",
+        name: "createFile",
+        message:
+          "The file you specified does not exist. would you like to create it?",
+      },
+    ]);
+    if (confirm) {
+      writeFileSync(envFile, "");
+    } else {
+      console.log(chalk.bgRed("Exiting program."));
+      // exit program as failure
+      process.exit(1);
+    }
   }
 
   // check if there is a ENV_PASSWORD in the .env file
   let env = readFileSync(envFile, "utf8");
   let password;
   if (!env.includes("ENV_PASSWORD")) {
-    console.log("No password found in .env file.");
-
+    // make chalk display "No password found in .env file." in red
+    console.log(chalk.bgRed(`No password found in ${envFile} file.`));
     // set password
-    password = await setPassword();
+    password = await setPassword(envFile);
   } else {
     // get password from .env file
-    password = hash(env.split("ENV_PASSWORD=")[1].split("")[0]);
+    password = env.split("ENV_PASSWORD=")[1].split(" #")[0];
   }
+  password = hash(password);
 
   if (option === "Encrypt") {
     const env = readFileSync(envFile, "utf8");
