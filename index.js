@@ -55,8 +55,8 @@ const setPassword = async (envFile) => {
   // open env file and add password to it
   let envLine = readFileSync(envFile, "utf8");
   envLine += `
-  # npx @rockbacon9922/envcrypt
-ENV_PASSWORD=${password} # Created by envcrypt
+  # npx devcrypt
+ENV_PASSWORD=${password} # Created by devcrypt
 `;
   writeFileSync(envFile, envLine);
 
@@ -64,9 +64,9 @@ ENV_PASSWORD=${password} # Created by envcrypt
 };
 
 async function main() {
-  logSpecial("envcrypt");
+  logSpecial("devcrypt");
   console.log(
-    "Welcome to envcrypt, a tool to encrypt and decrypt environment variables."
+    "Welcome to devcrypt, a tool to encrypt and decrypt environment variables."
   );
   console.log("Please select an option below:");
   const { option } = await inquirer.prompt([
@@ -126,14 +126,14 @@ async function main() {
     const env = readFileSync(envFile, "utf8");
     let encrypted = encrypt(env, password);
     // add a new line to the end of the file
-    encrypted += `\nnpx @rockbacon9922/envcrypt`;
+    encrypted += `\nnpx devcrypt`;
     writeFileSync(envFile + ".encrypted", encrypted);
     console.clear();
     console.log("Your environment variables have been encrypted.");
     process.exit(0);
   } else if (option === "Decrypt") {
     let env = readFileSync(envFile + ".encrypted", "utf8");
-    env = env.split(`\nnpx @rockbacon9922/envcrypt`)[0];
+    env = env.split(`\nnpx devcrypt`)[0];
     const decrypted = decrypt(env, password);
     writeFileSync(envFile, decrypted);
     console.clear();

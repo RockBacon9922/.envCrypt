@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RockBacon9922/envcrypt"
+    "url": "git+https://github.com/RockBacon9922/devcrypt"
   },
   "bin": "./index.js",
   "keywords": [
@@ -19,7 +19,8 @@
     "Variables",
     "Env",
     "Crypt",
-    "EnvCrypt"
+    "EnvCrypt",
+    "DevCrypt"
   ],
   "author": "William Stoneham",
   "license": "ISC",
