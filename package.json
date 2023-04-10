@@ -1,5 +1,5 @@
 {
-  "name": "@rockbacon9922/envcrypt",
+  "name": "devcrypt",
   "version": "1.0.5",
   "description": "A easy way to encrypt and decrypt your environment variables",
   "main": "index.js",
