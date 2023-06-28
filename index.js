@@ -143,13 +143,7 @@ async function main() {
 }
 
 const logSpecial = (text) => {
-  console.log(
-    figlet.textSync(text, {
-      font: "standard",
-      horizontalLayout: "default",
-      verticalLayout: "default",
-    })
-  );
+  console.log(figlet.textSync(text));
 };
 
 main();
