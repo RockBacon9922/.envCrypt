@@ -7,10 +7,7 @@
   "scripts": {
     "start": "node ."
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/RockBacon9922/devcrypt"
-  },
+  "repository": "git+https://github.com/RockBacon9922/devcrypt",
   "bin": "./index.js",
   "keywords": [
     "Encryption",
